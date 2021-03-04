@@ -13,3 +13,7 @@ export function CREATETODO (state, name) {
         state.cpt++;
     }
 }
+
+export function REMOVEDONE (state) {
+    state.todos = state.todos.filter(item => !item.completed)
+}
