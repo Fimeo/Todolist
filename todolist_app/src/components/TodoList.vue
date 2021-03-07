@@ -1,8 +1,8 @@
 <template>
   <section>
-  <h2>{{ listName }}</h2>
+  <h2>{{ currentListName }}</h2>
   <div>
-    <input class="new-todo" autofocus="autofocus" type="text" v-model="newTodo" v-on:keyup.enter="createTodo" placeholder="Ajouter une tâche">
+    <input class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText" v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
   </div>
 
   <div class="main">
@@ -35,7 +35,7 @@
         <a v-else v-on:click="setFilter('done')">Faites</a>
       </li>
     </ul>
-    <button class="clear-completed" v-on:click="removeDone">Supprimer terminés</button>
+    <button class="clear-completed" v-on:click="removeDoneTodo">Supprimer terminés</button>
   </footer>
   </section>
 </template>
@@ -47,36 +47,42 @@ export default {
   name: "Home",
   data() {
     return {
-      newTodo: '',
+      newTodoText: '',
       filter: 'all',
-      search_id: '',
-      listName: 'liste 1'
     }
   },
+  props: ['currentListId'],
   methods: {
     ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone']),
     createTodo() {
-      this.addTodo(this.newTodo)
-      this.newTodo = ''
+      this.addTodo([this.currentListId, this.newTodoText])
+      this.newTodoText = ''
     },
     deleteTodo(item) {
-      this.deleteItem(item)
+      this.deleteItem([this.currentListId, item])
     },
     setFilter(value) {
       this.filter = value;
+    },
+    removeDoneTodo() {
+      this.removeDone(this.currentListId)
     }
   },
   computed: {
-    ...mapGetters('todo', ['doneTodos', 'remainTodos' ,'allTodos']),
+    ...mapGetters('todo', ['doneTodos', 'remainTodos' ,'allTodos', 'getListName']),
     todos_filtered: function() {
-      if (this.filter === 'all')
-        return this.allTodos;
+      if (this.filter === 'all') {
+        return this.allTodos(this.currentListId);
+      }
       else if (this.filter === 'done')
-        return this.doneTodos;
+        return this.doneTodos(this.currentListId);
       else
-        return this.remainTodos;
+        return this.remainTodos(this.currentListId);
+    },
+    currentListName: function() {
+      return this.getListName(this.currentListId)
     }
-  },
+  }
 }
 </script>
 

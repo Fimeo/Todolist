@@ -1,19 +1,23 @@
-export const doneTodos = (state) => {
-    return state.todos.filter(todo => todo.completed);
+export const doneTodos = (state) => (listId) => {
+    return (state.todolists.find(list => list.id === listId).todos).filter(todo => todo.completed);
 }
 
-export const remainTodos = (state) => {
-    return state.todos.filter(todo => !todo.completed);
+export const remainTodos = (state) => (listId) => {
+    return (state.todolists.find(list => list.id === listId).todos).filter(todo => !todo.completed);
 }
 
-export const remainTodosCount = () => {
-    return remainTodos().count()
+export const allTodos = (state) => (listId) => {
+    return state.todolists.find(list => list.id === listId).todos
 }
 
-export const getTodoById = (state) => (id) => {
-    return state.todos.find(todo => todo.id === id);
+export const getTodolists = (state) => {
+    return state.todolists;
 }
 
-export const allTodos = (state) => {
-    return state.todos;
+export const getListName = (state) => (id) => {
+    return state.todolists.find(list => list.id === id).list_name
+}
+
+export const getCurrentListId = (state) => {
+    return state.currentListId;
 }
