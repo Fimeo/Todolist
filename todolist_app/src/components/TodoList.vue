@@ -8,12 +8,13 @@
   <div class="main">
     <ul class="todolist">
       <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
-        <div class="view">
+        <div class="view" v-if="editTodo !== todo.id">
           <input class="toggle" type="checkbox" v-model="todo.completed" v-bind:id="todo.id">
-          <label v-if="todo.completed" v-bind:for="todo.id" class="completed">{{ todo.name }}</label>
-          <label v-else v-bind:for="todo.id" class="remain">{{ todo.name }}</label>
+          <label v-on:dblclick="editTodo = todo.id; editTodoText = todo.name"
+                 v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
           <button class="destroy" v-on:click="deleteTodo(todo)"></button>
         </div>
+        <input type="text" class="edit" v-if="editTodo === todo.id" v-model="editTodoText">
       </li>
     </ul>
   </div>
@@ -49,6 +50,8 @@ export default {
     return {
       newTodoText: '',
       filter: 'all',
+      editTodo: null,
+      editTodoText: null
     }
   },
   props: ['currentListId'],
@@ -137,6 +140,7 @@ h2 {
   appearance: none;
   outline: 0;
   background: none no-repeat center;
+  z-index: 1;
 }
 
 .toggle{
@@ -157,6 +161,7 @@ h2 {
   display: block;
   line-height: 1.2;
   transition: color 0.4s;
+  z-index: 5
 }
 
 .todolist li:hover .destroy {
@@ -191,7 +196,7 @@ h2 {
   cursor: pointer;
 }
 
-.new-todo {
+.new-todo, .edit {
   padding: 16px;
   border: none;
   background: rgba(0, 0, 0, 0.003);
