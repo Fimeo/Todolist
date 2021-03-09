@@ -28,7 +28,7 @@ export default {
 .home {
   display: flex;
   flex-grow: unset;
-  align-items: start;
+  align-items: flex-start;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;

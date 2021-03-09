@@ -1,14 +1,3 @@
-import axios from 'axios';
-
-export function getTodolists({ commit }) {
-    axios
-        .get('http://138.68.74.39/api/todolists ')
-        .then(response => {
-            commit("GETTODOLISTS", response.data)
-        })
-        .catch(error => console.log(error))
-}
-
 export function deleteItem ({ commit }, [listId, item]) {
     commit('DELETETODO', [listId, item]);
 }
