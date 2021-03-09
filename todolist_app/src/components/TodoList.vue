@@ -2,19 +2,25 @@
   <section>
   <h2>{{ currentListName }}</h2>
   <div>
-    <input class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText" v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
+    <input v-on:focus="hideInput" class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText" v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
   </div>
 
   <div class="main">
     <ul class="todolist">
       <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
-        <div class="view" v-if="editTodo !== todo.id">
+        <div class="view" v-show="!editing[todo.id]">
           <input class="toggle" type="checkbox" v-model="todo.completed" v-bind:id="todo.id">
-          <label v-on:dblclick="editTodo = todo.id; editTodoText = todo.name"
+          <label @dblclick="showInput(todo.id, todo.name)"
                  v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
           <button class="destroy" v-on:click="deleteTodo(todo)"></button>
         </div>
-        <input type="text" class="edit" v-if="editTodo === todo.id" v-model="editTodoText">
+        <input type="text"
+               class="edit"
+               v-show="editing[todo.id]"
+               :ref="'input_'+todo.id"
+               v-model="editTodoText"
+               @blur="hideInput(todo.id)"
+               @keydown.enter="changeTodo(todo.id)">
       </li>
     </ul>
   </div>
@@ -50,13 +56,13 @@ export default {
     return {
       newTodoText: '',
       filter: 'all',
-      editTodo: null,
-      editTodoText: null
+      editTodoText: null,
+      editing: {}
     }
   },
   props: ['currentListId'],
   methods: {
-    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone']),
+    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText']),
     createTodo() {
       this.addTodo([this.currentListId, this.newTodoText])
       this.newTodoText = ''
@@ -69,6 +75,21 @@ export default {
     },
     removeDoneTodo() {
       this.removeDone(this.currentListId)
+    },
+    changeTodo(id) {
+      this.changeTodoText([this.currentListId, id, this.editTodoText])
+      this.editing[id] = false
+    },
+    showInput(id, text) {
+      this.editing[id] = true
+      this.editTodoText = text
+      this.$nextTick(function () {
+        this.$refs["input_" + id].focus()
+      })
+    },
+    hideInput(id) {
+      this.editing[id] = false
+      this.editTodoText = ""
     }
   },
   computed: {
@@ -141,6 +162,7 @@ h2 {
   outline: 0;
   background: none no-repeat center;
   z-index: 1;
+  cursor: pointer;
 }
 
 .toggle{

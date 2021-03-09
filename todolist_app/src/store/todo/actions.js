@@ -28,3 +28,7 @@ export function createList( { commit }) {
 export function changeCurrentList( { commit }, listId) {
     commit("CHANGECURRENTLIST", listId);
 }
+
+export function changeTodoText( { commit }, [listId, todoId, text]) {
+    commit("CHANGETODOTEXT", [listId, todoId, text])
+}

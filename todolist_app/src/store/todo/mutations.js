@@ -38,3 +38,7 @@ export function CREATELIST (state) {
 export function CHANGECURRENTLIST (state, listId) {
     state.currentListId = listId;
 }
+
+export function CHANGETODOTEXT(state, [listId, todoId, text]) {
+    state.todolists.find(list => list.id === listId).todos.find(todo => todo.id === todoId).name = text;
+}
