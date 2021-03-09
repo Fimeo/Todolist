@@ -1,8 +1,12 @@
 <template>
-<ul class="lists" v-for="list in getTodolists" v-bind:key="list">
-  <li v-on:click="changeCurrentList(list.id)">{{ list.list_name }} ({{ remainTodos(list.id).length }})</li>
-</ul>
-  <button v-on:click="createList">New List</button>
+  <aside>
+    <ul class="lists">
+      <li v-for="list in getTodolists"
+          v-bind:key="list"
+          v-on:click="changeCurrentList(list.id)">{{ list.list_name }} ({{ remainTodos(list.id).length }})</li>
+    </ul>
+    <button v-on:click="createList">New List</button>
+  </aside>
 </template>
 
 <script>

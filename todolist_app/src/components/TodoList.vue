@@ -26,7 +26,7 @@
   </div>
   <footer>
     <span class="todo-count">
-      {{ remainTodos.length }} tâche(s) à faire
+      {{ remainTodos(currentListId).length }} tâche(s) à faire
     </span>
     <ul class="filters">
       <li>
@@ -113,7 +113,6 @@ export default {
 <style scoped>
 section {
   max-width: 600px;
-  margin: 0 auto;
   background-color: #fff;
 }
 

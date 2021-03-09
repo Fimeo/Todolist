@@ -30,7 +30,7 @@ export function REMOVEDONE (state, listId) {
 export function CREATELIST (state) {
     state.todolists.push({
         id: state.list_cpt,
-        list_name: state.list_cpt++,
+        list_name: "list_" + state.list_cpt++,
         todos: []
     })
 }
