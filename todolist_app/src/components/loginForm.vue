@@ -15,7 +15,7 @@
     <input v-if="currentMethod === 'register'" id="name" type="text" v-model="name"><br>
     <input type="submit" v-bind:value="currentMethod">
   </form>
-  <button v-on:click="changeMethod">No account yet ? Register</button>
+  <button id="register" v-on:click="changeMethod">No account yet ? Register</button>
 </template>
 
 <script>
@@ -76,4 +76,47 @@ export default {
 
 <style scoped>
 
+h1 {
+  padding: auto ;
+  margin: auto;
+  text-align: center; 
+}
+
+p{
+  margin: auto; 
+  padding: auto;
+  text-align: center; 
+
+
+}
+
+#email{
+  padding: auto;
+  margin: 1%;
+  
+}
+
+#pass{
+  padding: auto;
+  margin: 1%;
+  
+
+
+}
+
+button{
+  vertical-align: middle;
+  margin: auto;
+  padding: auto;
+
+}
+form{
+  text-align: center; 
+  margin: auto;
+  padding: auto;
+  color: #af5b5e;
+ }
+
+
+ 
 </style>
