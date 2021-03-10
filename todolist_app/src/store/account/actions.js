@@ -11,7 +11,7 @@ export function login ( { commit }, [email, password]) {
     axios
         .post('http://138.68.74.39/api/login', null,{ params: { email: email, password: password}})
         .then(response => {
-            commit("LOGIN", response.data)
+            commit("LOGIN", response.data.token)
         })
         .catch(error => {
             commit("ERROR", {message: error.response.data.error, errors: {}})
@@ -24,10 +24,21 @@ export function register ( { commit }, [email, password, name]) {
     axios
         .post('http://138.68.74.39/api/register', null, { params: { email: email, password: password, name: name}})
         .then(response => {
-            commit("REGISTER", response.data)
+            // Response code : 200 = "OK"
+            // Store token
+            commit("LOGIN", response.data.token)
         })
         .catch(error => {
-            commit("ERROR", error.response.data)
+            // error.response.statusText !== "OK"
+            let data = {
+                message: error.response.statusText,
+                errors: {}
+            }
+            if (error.response.status === 422) {
+                data.message = error.response.data.message;
+                data.errors = error.response.data.errors;
+            }
+            commit("ERROR", data)
         })
         .finally(() => commit('LOADING', false))
 }

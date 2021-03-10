@@ -1,5 +1,5 @@
-export function LOGIN (state, data) {
-    state.token = data.token;
+export function LOGIN (state, token) {
+    state.token = token;
 }
 
 export function ERROR (state, error) {

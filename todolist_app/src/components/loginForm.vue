@@ -13,9 +13,10 @@
     <p v-if="getErrorField('name')"><b>{{ getErrorField('name') }}</b></p>
     <label v-if="currentMethod === 'register'" for="name">Name</label>
     <input v-if="currentMethod === 'register'" id="name" type="text" v-model="name"><br>
-    <input type="submit" v-bind:value="currentMethod">
+    <input type="submit" v-bind:value="currentMethod.charAt(0).toUpperCase() + currentMethod.substring(1)">
   </form>
-  <button id="register" v-on:click="changeMethod">No account yet ? Register</button>
+  <button v-if="currentMethod === 'login'" v-on:click="changeMethod">No account yet ? Register</button>
+  <button v-else v-on:click="changeMethod">Already an account ? Login</button>
 </template>
 
 <script>
@@ -62,12 +63,16 @@ export default {
       if (!this.password) {
         this.addError(['password', 'Password required'])
       }
+      if (this.currentMethod === "register" && !this.name) {
+        this.addError(['name', 'Name required'])
+      }
       e.preventDefault()
     },
     changeMethod() {
       if (this.isLoading)
         return;
       this.deleteErrors()
+      this.email = this.password = this.name = ""
       this.currentMethod = this.currentMethod === "login" ? "register" : "login";
     }
 }
