@@ -1,3 +1,7 @@
+export function ticktask ({ commit }, [listId, todoId] ){
+    commit('TICKTASK', [listId, todoId]);
+}
+
 export function deleteItem ({ commit }, [listId, item]) {
     commit('DELETETODO', [listId, item]);
 }

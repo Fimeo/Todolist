@@ -9,7 +9,7 @@
     <ul class="todolist">
       <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
         <div class="view" v-show="!editing[todo.id]">
-          <input class="toggle" type="checkbox" v-model="todo.completed" v-bind:id="todo.id">
+          <input class="toggle" type="checkbox" v-on:change="ticktask(currentListId, todo.id)" v-model="todo.completed" v-bind:id="todo.id">
           <label @dblclick="showInput(todo.id, todo.name)"
                  v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
           <button class="destroy" v-on:click="deleteTodo(todo)"></button>
@@ -62,7 +62,7 @@ export default {
   },
   props: ['currentListId'],
   methods: {
-    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText']),
+    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText', 'ticktask']),
     createTodo() {
       this.addTodo([this.currentListId, this.newTodoText])
       this.newTodoText = ''

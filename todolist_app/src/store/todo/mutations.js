@@ -1,3 +1,9 @@
+export function TICKTASK(state, [listId, todoId]){
+    let list = state.todolists.find(list => list.id === listId)
+    let todo = list.todos.find(todo => todo.id === todoId)
+    todo.completed = !todo.completed;
+}
+
 export function DELETETODO (state, [listId, todo]) {
     let list = state.todolists.find(list => list.id === listId)
     for (let t of list.todos) {
