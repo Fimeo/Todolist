@@ -14,7 +14,11 @@ export function login ( { commit }, [email, password]) {
             commit("LOGIN", response.data.token)
         })
         .catch(error => {
-            commit("ERROR", {message: error.response.data.error, errors: {}})
+            if (error.response.status === 401) {
+                commit("ERROR", "Login or password is invalid")
+            } else {
+                commit("ERROR", "A error was occurred")
+            }
         })
         .finally(() => commit('LOADING', false))
 }
@@ -29,16 +33,14 @@ export function register ( { commit }, [email, password, name]) {
             commit("LOGIN", response.data.token)
         })
         .catch(error => {
-            // error.response.statusText !== "OK"
-            let data = {
-                message: error.response.statusText,
-                errors: {}
+            if (error.response.status === 409) {
+                console.log(error.response)
+                commit("ERROR", error.response.data.message)
+            } else {
+                for (let e of error.response.data.errors) {
+                    commit("ERROR", e)
+                }
             }
-            if (error.response.status === 422) {
-                data.message = error.response.data.message;
-                data.errors = error.response.data.errors;
-            }
-            commit("ERROR", data)
         })
         .finally(() => commit('LOADING', false))
 }
@@ -47,6 +49,6 @@ export function deleteErrors( { commit } ) {
     commit("DELETEERRORS");
 }
 
-export function addError ( { commit }, [fieldName, msg]) {
-    commit('ADDERROR', [fieldName, msg])
+export function addError ( { commit }, msg) {
+    commit('ADDERROR', msg)
 }

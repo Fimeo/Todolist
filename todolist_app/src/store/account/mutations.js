@@ -3,7 +3,7 @@ export function LOGIN (state, token) {
 }
 
 export function ERROR (state, error) {
-    state.error = error;
+    state.errors.push(error);
 }
 
 export function LOADING(state, bool) {
@@ -11,10 +11,9 @@ export function LOADING(state, bool) {
 }
 
 export function DELETEERRORS(state) {
-    state.error.message = ""
-    state.error.errors = {}
+    state.errors = []
 }
 
-export function ADDERROR(state, [fieldName, msg]) {
-    state.error.errors[fieldName] = [msg]
+export function ADDERROR(state, msg) {
+    state.errors.push(msg)
 }

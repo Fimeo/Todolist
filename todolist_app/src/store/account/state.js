@@ -1,10 +1,7 @@
 export default function () {
     return {
         token: "",
-        error: {
-            message: "",
-            errors: {}
-        },
+        errors: [],
         isLoading: false,
     }
 }

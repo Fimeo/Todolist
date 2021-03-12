@@ -19,6 +19,9 @@ export default {
     ...mapGetters('todo', ['getCurrentListId']),
     current: function () {
       return this.getCurrentListId;
+    },
+    name : function () {
+      return 'name'
     }
   }
 }
