@@ -19,9 +19,6 @@ export default {
     ...mapGetters('todo', ['getCurrentListId']),
     current: function () {
       return this.getCurrentListId;
-    },
-    name : function () {
-      return 'name'
     }
   }
 }
@@ -31,7 +28,6 @@ export default {
 .home {
   display: flex;
   flex-grow: unset;
-  align-items: flex-start;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;

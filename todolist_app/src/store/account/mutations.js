@@ -17,3 +17,7 @@ export function DELETEERRORS(state) {
 export function ADDERROR(state, msg) {
     state.errors.push(msg)
 }
+
+export function LOGOUT(state) {
+    state.token = ""
+}

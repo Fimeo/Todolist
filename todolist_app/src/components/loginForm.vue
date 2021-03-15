@@ -1,9 +1,5 @@
 <template>
   <div class="wrapper">
-
-    <p>Is Logged : {{ isLogged }}</p>
-    <p class="loading" v-show="isLoading"><i>Loading...</i></p>
-
     <div class="alert" v-show="getErrors.length">
       <ul>
         <li v-for="error in getErrors" v-bind:key="error">
@@ -14,7 +10,8 @@
 
     <div id="login-page" class="login-page">
       <div>
-      <h1>{{ currentForm.charAt(0).toUpperCase() + currentForm.substring(1) }}</h1>
+        <h1>{{ currentForm.charAt(0).toUpperCase() + currentForm.substring(1) }}</h1>
+        <p class="loading" v-show="isLoading"><i>Loading...</i></p>
       <div class="form">
         <form v-if="currentForm.toLowerCase() === 'register'"
               v-on:submit.prevent="axiosRegister"
@@ -92,8 +89,10 @@ export default {
         this.addError('Password required')
       if (this.getErrors.length)
         return
-      console.log("axios login")
-      this.login([this.email, this.password])
+      this.login([this.email, this.password]).then(() => {
+        if (this.isLogged)
+          this.$router.push({name:'Home'})
+      })
       this.resetInputs()
     },
     axiosRegister() {
@@ -108,7 +107,10 @@ export default {
         this.addError('Name required')
       if (this.getErrors.length)
         return
-      this.register([this.email, this.password, this.name])
+      this.register([this.email, this.password, this.name]).then(() => {
+        if (this.isLogged)
+          this.$router.push({name:'Home'})
+      })
       this.resetInputs()
     }
 }
@@ -144,6 +146,7 @@ input {
   outline: 0;
   appearance: none;
   margin: 0;
+  width: 100%;
 }
 
 label {

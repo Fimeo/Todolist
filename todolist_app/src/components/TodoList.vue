@@ -1,54 +1,63 @@
 <template>
   <section>
-  <h2>{{ currentListName }}</h2>
-  <div>
-    <input v-on:focus="hideInput" class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText" v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
-  </div>
+    <h2 @dblclick="showInput('listName', currentListName)">{{ currentListName }}</h2>
+    <input type="text"
+           class="edit"
+           v-show="editing['listName']"
+           :ref="'input_'+'listName'"
+           v-model="editText"
+           @blur="hideInput('listName')"
+           @keydown.enter="changeListNameText">
+    <div>
+      <input v-on:focus="hideInput" class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText"
+             v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
+    </div>
 
-  <div class="main">
-    <ul class="todolist">
-      <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
-        <div class="view" v-show="!editing[todo.id]">
-          <input class="toggle" type="checkbox" v-on:change="ticktask(currentListId, todo.id)" v-model="todo.completed" v-bind:id="todo.id">
-          <label @dblclick="showInput(todo.id, todo.name)"
-                 v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
-          <button class="destroy" v-on:click="deleteTodo(todo)"></button>
-        </div>
-        <input type="text"
-               class="edit"
-               v-show="editing[todo.id]"
-               :ref="'input_'+todo.id"
-               v-model="editTodoText"
-               @blur="hideInput(todo.id)"
-               @keydown.enter="changeTodo(todo.id)">
-      </li>
-    </ul>
-  </div>
-  <footer>
+    <div class="main">
+      <ul class="todolist">
+        <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
+          <div class="view" v-show="!editing[todo.id]">
+            <input class="toggle" type="checkbox" v-on:click="toggle(todo.id)" v-model="todo.completed"
+                   v-bind:id="todo.id">
+            <label @dblclick="showInput(todo.id, todo.name)"
+                   v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
+            <button class="destroy" v-on:click="deleteTodo(todo)"></button>
+          </div>
+          <input type="text"
+                 class="edit"
+                 v-show="editing[todo.id]"
+                 :ref="'input_'+todo.id"
+                 v-model="editText"
+                 @blur="hideInput(todo.id)"
+                 @keydown.enter="changeTodo(todo.id)">
+        </li>
+      </ul>
+    </div>
+    <footer>
     <span class="todo-count">
       {{ remainTodos(currentListId).length }} tâche(s) à faire
     </span>
-    <ul class="filters">
-      <li>
-        <a v-if="filter === 'all'" class="selected" v-on:click="setFilter('all')">Toutes</a>
-        <a v-else v-on:click="setFilter('all')">Toutes</a>
-      </li>
-      <li>
-        <a v-if="filter === 'remain'" class="selected" v-on:click="setFilter('remain')">À faire</a>
-        <a v-else v-on:click="setFilter('remain')">À faire</a>
-      </li>
-      <li>
-        <a v-if="filter === 'done'" class="selected" v-on:click="setFilter('done')">Faites</a>
-        <a v-else v-on:click="setFilter('done')">Faites</a>
-      </li>
-    </ul>
-    <button class="clear-completed" v-on:click="removeDoneTodo">Supprimer terminés</button>
-  </footer>
+      <ul class="filters">
+        <li>
+          <a v-if="filter === 'all'" class="selected" v-on:click="setFilter('all')">Toutes</a>
+          <a v-else v-on:click="setFilter('all')">Toutes</a>
+        </li>
+        <li>
+          <a v-if="filter === 'remain'" class="selected" v-on:click="setFilter('remain')">À faire</a>
+          <a v-else v-on:click="setFilter('remain')">À faire</a>
+        </li>
+        <li>
+          <a v-if="filter === 'done'" class="selected" v-on:click="setFilter('done')">Faites</a>
+          <a v-else v-on:click="setFilter('done')">Faites</a>
+        </li>
+      </ul>
+      <button class="clear-completed" v-on:click="removeDoneTodo">Supprimer terminés</button>
+    </footer>
   </section>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import {mapGetters, mapActions} from "vuex";
 
 export default {
   name: "Home",
@@ -56,54 +65,63 @@ export default {
     return {
       newTodoText: '',
       filter: 'all',
-      editTodoText: null,
+      editText: null,
       editing: {}
     }
   },
   props: ['currentListId'],
   methods: {
-    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText', 'ticktask']),
+    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText', 'toggleTodo', 'changeListName']),
+    toggle(id) {
+      this.toggleTodo({listId: this.currentListId, todoId: id})
+    },
     createTodo() {
-      this.addTodo([this.currentListId, this.newTodoText])
+      this.addTodo({listId: this.currentListId, text: this.newTodoText})
       this.newTodoText = ''
     },
     deleteTodo(item) {
-      this.deleteItem([this.currentListId, item])
+      this.deleteItem({listId: this.currentListId, todo: item})
     },
     setFilter(value) {
       this.filter = value;
     },
     removeDoneTodo() {
-      this.removeDone(this.currentListId)
+      this.removeDone({listId: this.currentListId})
     },
     changeTodo(id) {
-      this.changeTodoText([this.currentListId, id, this.editTodoText])
-      this.editing[id] = false
+      if (this.editText !== "")
+        this.changeTodoText({listId: this.currentListId, todoId: id, text: this.editText})
+      this.hideInput(id)
+    },
+    changeListNameText() {
+      if (this.editText !== "")
+        this.changeListName({listId: this.currentListId, text: this.editText })
+      this.hideInput("listName")
     },
     showInput(id, text) {
+      // Set focus to the input when label was double clicked
       this.editing[id] = true
-      this.editTodoText = text
+      this.editText = text
       this.$nextTick(function () {
         this.$refs["input_" + id].focus()
       })
     },
     hideInput(id) {
       this.editing[id] = false
-      this.editTodoText = ""
+      this.editText = ""
     }
   },
   computed: {
-    ...mapGetters('todo', ['doneTodos', 'remainTodos' ,'allTodos', 'getListName']),
-    todos_filtered: function() {
+    ...mapGetters('todo', ['doneTodos', 'remainTodos', 'allTodos', 'getListName']),
+    todos_filtered: function () {
       if (this.filter === 'all') {
         return this.allTodos(this.currentListId);
-      }
-      else if (this.filter === 'done')
+      } else if (this.filter === 'done')
         return this.doneTodos(this.currentListId);
       else
         return this.remainTodos(this.currentListId);
     },
-    currentListName: function() {
+    currentListName: function () {
       return this.getListName(this.currentListId)
     }
   }
@@ -117,7 +135,7 @@ section {
 }
 
 h2 {
-  padding: 0;
+  padding: 15px;
   margin: 0;
 }
 
@@ -164,7 +182,7 @@ h2 {
   cursor: pointer;
 }
 
-.toggle{
+.toggle {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3C/svg%3E");
 }
 
@@ -235,7 +253,7 @@ h2 {
 }
 
 .new-todo:focus {
-  outline:none;
+  outline: none;
 }
 
 footer {
