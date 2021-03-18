@@ -3,6 +3,9 @@
     <sidebar></sidebar>
     <TodoList :current-list-id="current"></TodoList>
   </div>
+  <div v-else>
+    <sidebar></sidebar>
+  </div>
 </template>
 
 <script>
@@ -27,8 +30,9 @@ export default {
   mounted: function () {
     if (!localStorage.getItem('authToken')) {
       this.$router.push({name: 'login'})
+    } else {
+      this.getTodolists()
     }
-    this.getTodolists()
   }
 }
 </script>

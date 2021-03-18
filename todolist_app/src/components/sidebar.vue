@@ -3,7 +3,10 @@
     <ul class="lists">
       <li v-for="list in getTodolists"
           v-bind:key="list"
-          v-on:click="changeCurrentList({listId: list.id})">{{ list.name }} ({{ remainTodos(list.id).length }})</li>
+          v-on:click="changeCurrentList({listId: list.id})">{{ list.name }} ({{ remainTodos(list.id).length }})
+        <button v-on:click="deleteTodolist( {listId : list.id} )">del</button>
+
+      </li>
     </ul>
     <input type="text" v-model="inputListName">
     <button v-on:click="createList">New List</button>
@@ -23,7 +26,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('todo', ['createTodolist', 'changeCurrentList']),
+    ...mapActions('todo', ['createTodolist', 'changeCurrentList', 'deleteTodolist']),
     ...mapActions('account', ['logout', 'getUser']),
     logoutToSignIn() {
       this.logout().then(

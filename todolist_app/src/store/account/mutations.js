@@ -20,7 +20,7 @@ export function ADDERROR(state, msg) {
 
 export function LOGOUT(state) {
     state.token = ""
-
+    localStorage.removeItem('authToken');
 }
 
 export function SETUSER(state, payload) {

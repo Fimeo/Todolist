@@ -90,7 +90,7 @@ export default {
       if (this.getErrors.length)
         return
       this.login({email: this.email, password: this.password}).then(() => {
-          this.$router.push({name:'Home'})
+        this.$router.push({name:'Home'})
       })
       this.resetInputs()
     },

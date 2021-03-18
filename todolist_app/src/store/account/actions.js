@@ -63,8 +63,7 @@ export function getUser( { commit }) {
 }
 
 export function logout( { commit }) {
-    commit('LOGOUT');
-    localStorage.removeItem('authToken');
+    commit('LOGOUT')
 }
 
 export function deleteErrors( { commit } ) {

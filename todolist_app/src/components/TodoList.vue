@@ -17,11 +17,14 @@
       <ul class="todolist">
         <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
           <div class="view" v-show="!editing[todo.id]">
-            <input class="toggle" type="checkbox" v-on:click="toggle(todo.id)" v-model="todo.completed"
+            <input class="toggle" type="checkbox"
+                   v-on:click="toggleTodo({todoId: todo.id, name: todo.name, listId: currentListId, completed: todo.completed})"
+                   v-model="todo.completed"
                    v-bind:id="todo.id">
+            <pre>{{ todo.completed }}</pre>
             <label @dblclick="showInput(todo.id, todo.name)"
                    v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
-            <button class="destroy" v-on:click="deleteTodo(todo)"></button>
+            <button class="destroy" v-on:click="deleteTodo({listId: currentListId, todoId: todo.id})"></button>
           </div>
           <input type="text"
                  class="edit"
@@ -71,16 +74,10 @@ export default {
   },
   props: ['currentListId'],
   methods: {
-    ...mapActions('todo', ['deleteItem', 'createTodo', 'removeDone', 'changeTodoText', 'toggleTodo', 'changeListName']),
-    toggle(id) {
-      this.toggleTodo({listId: this.currentListId, todoId: id})
-    },
+    ...mapActions('todo', ['deleteTodo', 'createTodo', 'removeDone', 'changeTodoText', 'toggleTodo', 'changeListName']),
     createNewTodo() {
       this.createTodo({listId: this.currentListId, text: this.newTodoText})
       this.newTodoText = ''
-    },
-    deleteTodo(item) {
-      this.deleteItem({listId: this.currentListId, todo: item})
     },
     setFilter(value) {
       this.filter = value;
