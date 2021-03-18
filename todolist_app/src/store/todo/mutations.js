@@ -31,7 +31,7 @@ export function DELETELIST(state, payload){
 export function TOGGLETODO(state, payload){
     let list = state.todolists.find(list => list.id === payload.listId)
     let todo = list.todos.find(todo => todo.id === payload.todoId)
-    todo.completed = todo.completed ? "0" : "1";
+    todo.completed = +!payload.completed;
 }
 
 export function CHANGELISTNAME (state, payload) {
@@ -50,15 +50,17 @@ export function DELETETODO (state, payload) {
 
 export function CREATETODO (state, payload) {
     let list = state.todolists.find(list => list.id === payload.todolist_id)
-    console.log(payload)
     payload.completed = 0
-    console.log(payload)
     list.todos.push(payload)
+    console.log(payload)
 }
 
 export function REMOVEDONE (state, payload) {
-    let list = state.todolists.find(list => list.id === payload.listId)
-    list.todos = list.todos.filter(item => !item.completed)
+    console.log(state.todolists.find(list => list.id === payload.listId).todos.filter(todo => !todo.completed))
+    console.log(state.todolists)
+    if (state.todolists.find(list => list.id === payload.listId).todos.filter(todo => !todo.completed).length === 0) {
+        console.log("OK")
+    }
 }
 
 export function CHANGECURRENTLIST (state, payload) {

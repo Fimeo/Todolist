@@ -12,18 +12,16 @@
       <input v-on:focus="hideInput" class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText"
              v-on:keydown.enter="createNewTodo" placeholder="Ajouter une tâche">
     </div>
-
     <div class="main">
       <ul class="todolist">
         <li v-for="todo in todos_filtered" :key="todo.name" class="todo">
           <div class="view" v-show="!editing[todo.id]">
             <input class="toggle" type="checkbox"
+                   v-bind:checked="!!+todo.completed"
                    v-on:click="toggleTodo({todoId: todo.id, name: todo.name, listId: currentListId, completed: todo.completed})"
-                   v-model="todo.completed"
                    v-bind:id="todo.id">
-            <pre>{{ todo.completed }}</pre>
             <label @dblclick="showInput(todo.id, todo.name)"
-                   v-bind:class="todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
+                   v-bind:class="!!+todo.completed ? 'completed' : 'remain'">{{ todo.name }}</label>
             <button class="destroy" v-on:click="deleteTodo({listId: currentListId, todoId: todo.id})"></button>
           </div>
           <input type="text"
@@ -83,7 +81,7 @@ export default {
       this.filter = value;
     },
     removeDoneTodo() {
-      this.removeDone({listId: this.currentListId})
+      this.removeDone({listId: this.currentListId, todos: this.doneTodos(this.currentListId)})
     },
     changeTodo(id) {
       if (this.editText !== "")
