@@ -3,12 +3,12 @@
     <ul class="lists">
       <li v-for="list in getTodolists"
           v-bind:key="list"
-          v-on:click="changeCurrentList({listId: list.id})">{{ list.list_name }} ({{ remainTodos(list.id).length }})</li>
+          v-on:click="changeCurrentList({listId: list.id})">{{ list.name }} ({{ remainTodos(list.id).length }})</li>
     </ul>
+    <input type="text" v-model="inputListName">
     <button v-on:click="createList">New List</button>
     <button v-on:click="logoutToSignIn">Logout</button>
-    {{ getToken }}
-    <button v-on:click="getUser({token: getToken})">GetUser</button>
+    <button v-on:click="getUser">GetUser</button>
   </aside>
 </template>
 
@@ -17,18 +17,28 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: "sidebar.vue",
+  data() {
+    return {
+      inputListName: ""
+    }
+  },
   methods: {
-    ...mapActions('todo', ['createList', 'changeCurrentList']),
+    ...mapActions('todo', ['createTodolist', 'changeCurrentList']),
     ...mapActions('account', ['logout', 'getUser']),
     logoutToSignIn() {
       this.logout().then(
           this.$router.push('login')
       )
+    },
+    createList() {
+      if(this.inputListName !== "") {
+        this.createTodolist({name: this.inputListName})
+        this.inputListName = ""
+      }
     }
   },
   computed: {
     ...mapGetters('todo', ['getTodolists', 'remainTodos']),
-    ...mapGetters('account', ['getToken'])
   }
 }
 </script>

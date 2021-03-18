@@ -1,16 +1,19 @@
 import axios from 'axios';
 
+const token = localStorage.getItem('authToken')
+
 /**
  * Les actions gèrent les opérations non synchrones, l'utilisation de axios
  * se fait donc dans les actions. Les mutations sont appelées pour modifier le state
  * */
 
-export function login ( { commit }, [email, password]) {
+export function login ( { commit }, payload) {
     commit('LOADING', true)
     return axios
-        .post('http://138.68.74.39/api/login', null,{ params: { email: email, password: password}})
+        .post('http://138.68.74.39/api/login', null,{ params: { email: payload.email, password: payload.password}})
         .then(response => {
             commit("LOGIN", response.data.token)
+            localStorage.setItem('authToken', response.data.token)
         })
         .catch(error => {
             if (error.response.status === 401) {
@@ -22,10 +25,10 @@ export function login ( { commit }, [email, password]) {
         .finally(() => commit('LOADING', false))
 }
 
-export function register ( { commit }, [email, password, name]) {
+export function register ( { commit }, payload) {
     commit('LOADING', true)
     return axios
-        .post('http://138.68.74.39/api/register', null, { params: { email: email, password: password, name: name}})
+        .post('http://138.68.74.39/api/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
         .then(response => {
             // Response code : 200 = "OK"
             // Store token
@@ -44,12 +47,13 @@ export function register ( { commit }, [email, password, name]) {
         .finally(() => commit('LOADING', false))
 }
 
-export function getUser( { commit }, payload) {
+export function getUser( { commit }) {
     commit('LOADING', true)
     axios
-        .get('http://138.68.74.39/api/user', {headers: {'Authorization': `Bearer ${payload.token}`}
+        .get('http://138.68.74.39/api/user', {headers: {'Authorization': `Bearer ${token}`}
         })
         .then((res) => {
+            commit("SETUSER", res.data)
             console.log(res.data)
         })
         .catch((error) => {
@@ -60,6 +64,7 @@ export function getUser( { commit }, payload) {
 
 export function logout( { commit }) {
     commit('LOGOUT');
+    localStorage.removeItem('authToken');
 }
 
 export function deleteErrors( { commit } ) {

@@ -67,7 +67,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('account', ['isLogged', 'isLoading', 'getErrors'])
+    ...mapGetters('account', ['isLoading', 'getErrors'])
   },
   methods: {
     ...mapActions('account', ['login', 'register', 'deleteErrors', 'addError']),
@@ -89,8 +89,7 @@ export default {
         this.addError('Password required')
       if (this.getErrors.length)
         return
-      this.login([this.email, this.password]).then(() => {
-        if (this.isLogged)
+      this.login({email: this.email, password: this.password}).then(() => {
           this.$router.push({name:'Home'})
       })
       this.resetInputs()
@@ -107,8 +106,7 @@ export default {
         this.addError('Name required')
       if (this.getErrors.length)
         return
-      this.register([this.email, this.password, this.name]).then(() => {
-        if (this.isLogged)
+      this.register({email: this.email, password: this.password, name: this.name}).then(() => {
           this.$router.push({name:'Home'})
       })
       this.resetInputs()

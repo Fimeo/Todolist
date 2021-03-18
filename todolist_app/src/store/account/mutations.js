@@ -20,4 +20,9 @@ export function ADDERROR(state, msg) {
 
 export function LOGOUT(state) {
     state.token = ""
+
+}
+
+export function SETUSER(state, payload) {
+    state.user = payload;
 }

@@ -1,3 +1,21 @@
+export function SETLISTS(state, payload) {
+    state.todolists = payload;
+    for (let list of state.todolists) {
+        state.currentListId = list.id;
+        break;
+    }
+}
+
+export function SETTODOS(state, payload) {
+    state.todolists.find(list => list.id === payload.listId).todos = payload.data
+}
+
+export function CREATETODOLIST(state, payload) {
+    payload.todos = []
+    state.todolists.push(payload);
+    state.currentListId = payload.id;
+}
+
 export function TOGGLETODO(state, payload){
     let list = state.todolists.find(list => list.id === payload.listId)
     let todo = list.todos.find(todo => todo.id === payload.todoId)
@@ -5,7 +23,7 @@ export function TOGGLETODO(state, payload){
 }
 
 export function CHANGELISTNAME (state, payload) {
-    state.todolists.find(list => list.id === payload.listId).list_name = payload.text;
+    state.todolists.find(list => list.id === payload.listId).name = payload.text;
 }
 
 export function DELETETODO (state, payload) {
@@ -23,7 +41,6 @@ export function CREATETODO (state, payload) {
         if (state.todolists.find(list => list.id === payload.listId)) {
             state.todolists.find(list => list.id === payload.listId).todos.push(
                 {
-                    id: state.cpt++,
                     name: payload.text,
                     completed: false
                 }
@@ -35,14 +52,6 @@ export function CREATETODO (state, payload) {
 export function REMOVEDONE (state, payload) {
     let list = state.todolists.find(list => list.id === payload.listId)
     list.todos = list.todos.filter(item => !item.completed)
-}
-
-export function CREATELIST (state) {
-    state.todolists.push({
-        id: state.list_cpt,
-        list_name: "list_" + state.list_cpt++,
-        todos: []
-    })
 }
 
 export function CHANGECURRENTLIST (state, payload) {

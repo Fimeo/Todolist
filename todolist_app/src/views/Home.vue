@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="current">
     <sidebar></sidebar>
     <TodoList :current-list-id="current"></TodoList>
   </div>
@@ -8,7 +8,7 @@
 <script>
 import TodoList from '@/components/TodoList.vue'
 import sidebar from "@/components/sidebar";
-import { mapGetters } from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: 'Home',
@@ -20,6 +20,15 @@ export default {
     current: function () {
       return this.getCurrentListId;
     }
+  },
+  methods: {
+    ...mapActions('todo', ['getTodolists', 'getTodos', 'createTodolist'])
+  },
+  mounted: function () {
+    if (!localStorage.getItem('authToken')) {
+      this.$router.push({name: 'login'})
+    }
+    this.getTodolists()
   }
 }
 </script>

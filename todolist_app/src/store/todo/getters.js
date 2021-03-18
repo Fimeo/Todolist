@@ -15,7 +15,7 @@ export const getTodolists = (state) => {
 }
 
 export const getListName = (state) => (id) => {
-    return state.todolists.find(list => list.id === id).list_name
+    return state.todolists.find(list => list.id === id).name
 }
 
 export const getCurrentListId = (state) => {

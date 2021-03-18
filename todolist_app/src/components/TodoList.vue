@@ -10,7 +10,7 @@
            @keydown.enter="changeListNameText">
     <div>
       <input v-on:focus="hideInput" class="new-todo" autofocus="autofocus" type="text" v-model="newTodoText"
-             v-on:keydown.enter="createTodo" placeholder="Ajouter une tâche">
+             v-on:keydown.enter="createNewTodo" placeholder="Ajouter une tâche">
     </div>
 
     <div class="main">
@@ -71,12 +71,12 @@ export default {
   },
   props: ['currentListId'],
   methods: {
-    ...mapActions('todo', ['deleteItem', 'addTodo', 'removeDone', 'changeTodoText', 'toggleTodo', 'changeListName']),
+    ...mapActions('todo', ['deleteItem', 'createTodo', 'removeDone', 'changeTodoText', 'toggleTodo', 'changeListName']),
     toggle(id) {
       this.toggleTodo({listId: this.currentListId, todoId: id})
     },
-    createTodo() {
-      this.addTodo({listId: this.currentListId, text: this.newTodoText})
+    createNewTodo() {
+      this.createTodo({listId: this.currentListId, text: this.newTodoText})
       this.newTodoText = ''
     },
     deleteTodo(item) {

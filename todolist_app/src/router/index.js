@@ -1,19 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import store from '@/store/index.js'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
-    beforeEnter: (to, from, next) => {
-      if (store.state.account.token) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
+    component: Home
   },
   {
     path: '/login',
