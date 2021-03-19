@@ -28,6 +28,7 @@ export function DELETELIST(state, payload){
 }
 
 export function TOGGLETODO(state, payload){
+    console.log(payload)
     let list = state.todolists.find(list => list.id === payload.listId)
     let todo = list.todos.find(todo => todo.id === payload.todoId)
     todo.completed = +!payload.completed;

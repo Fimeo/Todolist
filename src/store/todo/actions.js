@@ -1,23 +1,24 @@
-import axios from "axios";
+import api from '@/api/api.js'
 
 export function toggleTodo( { commit }, payload) {
     commit('TOGGLETODO', payload)
-    axios
-        .post('http://138.68.74.39/api/completeTodo/' + payload.todoId, null, {headers:{Authorization: 'Bearer ' + localStorage.getItem('authToken')}, params: {name: payload.name, completed: +!payload.completed, todolist_id: payload.listId}})
+    api
+        .post('/completeTodo/' + payload.todoId, null, {params: {name: payload.name, completed: +!payload.completed, todolist_id: payload.listId}})
         .catch(() => {
+            payload.completed = +!payload.completed
             commit("TOGGLETODO", payload)
         })
 }
 
 export function getTodolists( { commit }) {
-    axios.get('http://138.68.74.39/api/todolists', {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}})
+    api.get('/todolists')
         .then(response => {
             commit('SETLISTS', response.data)
         })
 }
 
 export function getTodos( { commit } , payload) {
-    axios.get('http://138.68.74.39/api/todos/' + payload.listId, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}})
+    api.get('/todos/' + payload.listId)
         .then(response => {
             payload.data = response.data
             commit("SETTODOS", payload)
@@ -28,8 +29,8 @@ export function getTodos( { commit } , payload) {
 }
 
 export function createTodo( { commit }, payload) {
-    axios
-        .post('http://138.68.74.39/api/todo', null, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}, params: { name: payload.text, completed:0, todolist_id:payload.listId}})
+    api
+        .post('/todo', null, {params: {name: payload.text, completed:0, todolist_id:payload.listId}})
         .then(response => {
             commit('CREATETODO', response.data)
         })
@@ -39,8 +40,8 @@ export function createTodo( { commit }, payload) {
 }
 
 export function createTodolist( { commit }, payload) {
-    axios
-        .post('http://138.68.74.39/api/todolist', null, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}, params: { name: payload.name}})
+    api
+        .post('/todolist', null, {params: {name: payload.name}})
         .then(response => {
             commit("CREATETODOLIST", response.data)
         })
@@ -50,8 +51,8 @@ export function createTodolist( { commit }, payload) {
 }
 
 export function deleteTodolist( { commit }, payload) {
-    axios
-        .delete('http://138.68.74.39/api/todolist/' + payload.listId, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}})
+    api
+        .delete('/todolist/' + payload.listId)
         .then(() => {
             commit("DELETELIST", payload)
         })
@@ -61,8 +62,8 @@ export function deleteTodolist( { commit }, payload) {
 }
 
 export function deleteTodo ({ commit }, payload) {
-    axios
-        .delete('http://138.68.74.39/api/todo/' + payload.todoId, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}})
+    api
+        .delete('/todo/' + payload.todoId)
         .then(() => {
             commit("DELETETODO", payload)
         })
@@ -84,10 +85,9 @@ export function changeCurrentList( { commit, dispatch }, payload) {
 }
 
 export function changeTodoText( { commit }, payload) {
-    axios
-        .patch('http://138.68.74.39/api/todo/' + payload.todoId, null, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}, params: {name: payload.text, completed: +payload.completed, todolist_id: payload.listId}})
-        .then(res => {
-            console.log(res.data)
+    api
+        .patch('/todo/' + payload.todoId, null, {params: {name: payload.text, completed: +payload.completed, todolist_id: payload.listId}})
+        .then(() => {
             commit("CHANGETODOTEXT", payload);
         })
         .catch(error => {

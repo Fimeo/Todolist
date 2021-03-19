@@ -1,9 +1,11 @@
 import axios from 'axios';
 import router from "@/router";
 
+import api from '@/api/api.js';
+
 export function login ( { commit }, payload) {
     commit('LOADING', true)
-    return axios
+    axios
         .post('http://138.68.74.39/api/login', null,{ params: { email: payload.email, password: payload.password}})
         .then(response => {
             commit("LOGIN", response.data.token)
@@ -22,7 +24,7 @@ export function login ( { commit }, payload) {
 
 export function register ( { commit }, payload) {
     commit('LOADING', true)
-    return axios
+    axios
         .post('http://138.68.74.39/api/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
         .then(response => {
             commit("LOGIN", response.data.token)
@@ -43,20 +45,19 @@ export function register ( { commit }, payload) {
 
 export function getUserAccount( { commit }) {
     commit('LOADING', true)
-    axios
-        .get('http://138.68.74.39/api/user', {headers: {'Authorization': `Bearer ${localStorage.getItem('authToken')}`}
-        })
+    api
+        .get('/user')
         .then((res) => {
             commit("SETUSER", res.data)
         })
         .catch((error) => {
-            console.error(error)
+            console.error(error.response)
         })
         .finally(() => commit('LOADING', false))
 }
 
-export function logout( { commit }) {
-    commit('LOGOUT')
+export function logout( { commit, rootState }) {
+    commit('LOGOUT', rootState)
     router.push({name: 'login'}).then(() => console.log("Signin"))
 }
 

@@ -18,8 +18,11 @@ export function ADDERROR(state, msg) {
     state.errors.push(msg)
 }
 
-export function LOGOUT(state) {
+export function LOGOUT(state, rootState) {
     state.token = ""
+    state.user = {}
+    rootState.todo.currentListId = null;
+    rootState.todo.todolists = []
     localStorage.removeItem('authToken');
 }
 
