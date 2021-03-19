@@ -89,9 +89,7 @@ export default {
         this.addError('Password required')
       if (this.getErrors.length)
         return
-      this.login({email: this.email, password: this.password}).then(() => {
-        this.$router.push({name:'Home'})
-      })
+      this.login({email: this.email, password: this.password})
       this.resetInputs()
     },
     axiosRegister() {
@@ -106,9 +104,7 @@ export default {
         this.addError('Name required')
       if (this.getErrors.length)
         return
-      this.register({email: this.email, password: this.password, name: this.name}).then(() => {
-          this.$router.push({name:'Home'})
-      })
+      this.register({email: this.email, password: this.password, name: this.name})
       this.resetInputs()
     }
 }
@@ -154,7 +150,7 @@ label {
   left: 0;
   transition: .3s;
   transform-origin: left;
-  color: hsl(196, 78%, 61%);
+  color: #db4c3f;
 }
 
 button {
@@ -165,13 +161,13 @@ button {
   overflow: hidden;
   background: 0 0;
   transition: .3s;
-  border: 1px solid hsl(196, 78%, 61%);
+  border: 1px solid #db4c3f;
   color: white;
 }
 
 button:hover {
   transition: .3s;
-  background: hsl(196, 66%, 74%);
+  background: #a83d32;;
   cursor: pointer;
 }
 

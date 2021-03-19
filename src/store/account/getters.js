@@ -11,5 +11,9 @@ export const getErrors = (state) => {
 }
 
 export const getToken = (state) => {
-    return state.token
+    return state.token;
+}
+
+export const getUser = (state) => {
+    return state.user;
 }

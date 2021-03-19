@@ -1,11 +1,5 @@
 import axios from 'axios';
-
-const token = localStorage.getItem('authToken')
-
-/**
- * Les actions gèrent les opérations non synchrones, l'utilisation de axios
- * se fait donc dans les actions. Les mutations sont appelées pour modifier le state
- * */
+import router from "@/router";
 
 export function login ( { commit }, payload) {
     commit('LOADING', true)
@@ -14,6 +8,7 @@ export function login ( { commit }, payload) {
         .then(response => {
             commit("LOGIN", response.data.token)
             localStorage.setItem('authToken', response.data.token)
+            router.push({name: 'Home'}).then(() => console.log("login success"))
         })
         .catch(error => {
             if (error.response.status === 401) {
@@ -33,6 +28,7 @@ export function register ( { commit }, payload) {
             // Response code : 200 = "OK"
             // Store token
             commit("LOGIN", response.data.token)
+            router.push({name: "Home"}).then(() => console.log("register success"))
         })
         .catch(error => {
             if (error.response.status === 409) {
@@ -47,14 +43,13 @@ export function register ( { commit }, payload) {
         .finally(() => commit('LOADING', false))
 }
 
-export function getUser( { commit }) {
+export function getUserAccount( { commit }) {
     commit('LOADING', true)
     axios
-        .get('http://138.68.74.39/api/user', {headers: {'Authorization': `Bearer ${token}`}
+        .get('http://138.68.74.39/api/user', {headers: {'Authorization': `Bearer ${localStorage.getItem('authToken')}`}
         })
         .then((res) => {
             commit("SETUSER", res.data)
-            console.log(res.data)
         })
         .catch((error) => {
             console.error(error)
@@ -64,6 +59,7 @@ export function getUser( { commit }) {
 
 export function logout( { commit }) {
     commit('LOGOUT')
+    router.push({name: 'login'}).then(() => console.log("Signin"))
 }
 
 export function deleteErrors( { commit } ) {

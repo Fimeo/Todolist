@@ -71,8 +71,7 @@ export function deleteTodo ({ commit }, payload) {
         })
 }
 
-// eslint-disable-next-line no-unused-vars
-export function removeDone( { commit, dispatch}, payload) {
+export function removeDone( { dispatch }, payload) {
     for (let todo of payload.todos) {
         dispatch('deleteTodo', {todoId: todo.id, listId: payload.listId})
     }
@@ -84,8 +83,4 @@ export function changeCurrentList( { commit }, payload) {
 
 export function changeTodoText( { commit }, payload) {
     commit("CHANGETODOTEXT", payload);
-}
-
-export function changeListName( { commit }, payload) {
-    commit("CHANGELISTNAME", payload);
 }
