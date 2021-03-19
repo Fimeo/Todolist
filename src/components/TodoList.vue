@@ -36,7 +36,7 @@
                      class="edit"
                      type="text"
                      @blur="hideInput(todo.id)"
-                     @keydown.enter="changeTodo(todo.id)">
+                     @keydown.enter="changeTodo(todo)">
             </li>
           </ul>
         </div>
@@ -90,10 +90,10 @@ export default {
     removeDoneTodo() {
       this.removeDone({listId: this.currentListId, todos: this.doneTodos(this.currentListId)})
     },
-    changeTodo(id) {
+    changeTodo(todo) {
       if (this.editText !== "")
-        this.changeTodoText({listId: this.currentListId, todoId: id, text: this.editText})
-      this.hideInput(id)
+        this.changeTodoText({listId: this.currentListId, todoId: todo.id, text: this.editText, completed: todo.completed})
+      this.hideInput(todo.id)
     },
     showInput(id, text) {
       // Set focus to the input when label was double clicked

@@ -82,5 +82,13 @@ export function changeCurrentList( { commit }, payload) {
 }
 
 export function changeTodoText( { commit }, payload) {
-    commit("CHANGETODOTEXT", payload);
+    axios
+        .patch('http://138.68.74.39/api/todo/' + payload.todoId, null, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}, params: {name: payload.text, completed: +payload.completed, todolist_id: payload.listId}})
+        .then(res => {
+            console.log(res.data)
+            commit("CHANGETODOTEXT", payload);
+        })
+        .catch(error => {
+            console.log(error.response.data);
+        });
 }
