@@ -8,7 +8,7 @@
 
       </li>
     </ul>
-    <input type="text" v-model="inputListName">
+    <input type="text" v-model="inputListName" size="16">
     <button v-on:click="createList">New List</button>
     <button v-on:click="logoutToSignIn">Logout</button>
     <button v-on:click="getUser">GetUser</button>
@@ -48,20 +48,34 @@ export default {
 
 <style scoped>
 aside {
+  display: ;
   width: 150px;
+  max-height: ;
   word-wrap: break-word;
   background: white;
   padding: 5px;
+  border-radius:3px;
 }
 
 ul {
   list-style-type: none;
   padding: 0;
   line-height: 1.8;
+  font: 1em "Trebuchet MS",Arial,sans-serif ;
 }
 
+li {
+  border:1px solid #48695e;
+	border-radius:2px;
+	padding: 2px 2px ;
+	margin:2px;
+}
 li:hover {
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: ;
+  background: #ece2e2 ;
+	border:1px solid #48695e;
+	border-radius:1px;
+  padding: 2px 4px;
 }
 </style>
