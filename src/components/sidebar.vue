@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     ...mapGetters('todo', ['getTodolists', 'remainTodos', 'getCurrentListId']),
-  },
+  }
 }
 </script>
 
@@ -72,13 +72,12 @@ export default {
   width: 265px;
   padding-bottom: 30px;
   box-sizing: border-box;
-
 }
 
 .list_menu input {
   padding: 0;
   overflow: hidden;
-  width: 250px;
+  width: 240px;
   margin: 35px 0 0;
   line-height: 2;
 }
@@ -111,7 +110,6 @@ export default {
 }
 
 .item_icon {
-  color: #246fe0;
   width: 20px;
   height: 24px;
   display: flex;
@@ -121,7 +119,6 @@ export default {
   align-items: center;
   margin-right: 5px;
   margin-top: -1px;
-  font-size: 14px;
 }
 
 .item_content {

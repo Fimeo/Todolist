@@ -53,7 +53,7 @@ export function deleteTodolist( { commit }, payload) {
     axios
         .delete('http://138.68.74.39/api/todolist/' + payload.listId, {headers: {Authorization: 'Bearer ' + localStorage.getItem('authToken')}})
         .then(() => {
-            commit("DELETELIST", payload.listId)
+            commit("DELETELIST", payload)
         })
         .catch(error => {
             console.log(error.response.data)

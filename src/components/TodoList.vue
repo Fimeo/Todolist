@@ -5,7 +5,7 @@
         <div class="header_todolist_content">
           <h1>{{ currentListName }}</h1>
           <div class="header_actions">
-            <button v-on:click="removeDoneTodo">Supprimer terminés</button>
+            <button v-on:click="removeDoneTodo">Supprimer terminés</button> |
             <button v-on:click="deleteTodolist({listId: currentListId})"><span>Supprimer la liste</span></button>
           </div>
         </div>
@@ -266,16 +266,6 @@ footer {
   cursor: pointer;
 }
 
-.clear-completed {
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-.clear-completed:hover {
-  text-decoration: underline;
-}
-
 
 main {
   margin-left: 305px;
@@ -341,7 +331,6 @@ main {
 }
 
 .header_actions {
-  margin-top: 5px;
   display: flex;
   -webkit-box-align: center;
   align-items: center;
@@ -353,10 +342,10 @@ main {
   display: flex;
   -webkit-box-align: center;
   align-items: center;
-  margin-left: 16px;
   text-decoration: none;
   color: grey;
   border-radius: 3px;
+  padding: 3px;
 }
 
 .header_actions button:hover {
