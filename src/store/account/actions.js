@@ -25,8 +25,6 @@ export function register ( { commit }, payload) {
     return axios
         .post('http://138.68.74.39/api/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
         .then(response => {
-            // Response code : 200 = "OK"
-            // Store token
             commit("LOGIN", response.data.token)
             router.push({name: "Home"}).then(() => console.log("register success"))
         })

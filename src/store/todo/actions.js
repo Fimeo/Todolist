@@ -77,7 +77,9 @@ export function removeDone( { dispatch }, payload) {
     }
 }
 
-export function changeCurrentList( { commit }, payload) {
+// When current list has been changed, reload todos from list
+export function changeCurrentList( { commit, dispatch }, payload) {
+    dispatch('getTodos', payload);
     commit("CHANGECURRENTLIST", payload);
 }
 

@@ -21,8 +21,6 @@ export function CREATETODOLIST(state, payload) {
     state.currentListId = payload.id;
 }
 
-
-//TODO : revoir la suppression dans le state car ne supprime pas la bonne liste
 export function DELETELIST(state, payload){
     let list = state.todolists.find(list => list.id === payload.listId)
     state.todolists.splice(state.todolists.indexOf(list), 1)
