@@ -127,11 +127,17 @@ export default {
 section {
   max-width: 600px;
   background-color: #fff;
+  border-radius:5px;
 }
 
 h2 {
   padding: 15px;
   margin: 0;
+}
+
+h2:hover {
+  font-weight: bolder;
+  color: rgb(14, 149, 59);
 }
 
 .completed {
