@@ -28,6 +28,7 @@ export function register ( { commit }, payload) {
         .post('http://138.68.74.39/api/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
         .then(response => {
             commit("LOGIN", response.data.token)
+            localStorage.setItem('authToken', response.data.token)
             router.push({name: "Home"}).then(() => console.log("register success"))
         })
         .catch(error => {
