@@ -8,11 +8,6 @@ export default {
   name: "User",
   components: {
     loginForm
-  },
-  mounted: function () {
-    if (localStorage.getItem('authToken')) {
-      this.$router.push({name: 'Home'})
-    }
   }
 }
 </script>

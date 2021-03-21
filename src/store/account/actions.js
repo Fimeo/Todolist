@@ -1,15 +1,17 @@
 import axios from 'axios';
 import router from "@/router";
 
-import api from '@/api/api.js';
-
 export function login ( { commit }, payload) {
     commit('LOADING', true)
     axios
-        .post('http://138.68.74.39/api/login', null,{ params: { email: payload.email, password: payload.password}})
+        .post('/login', null,{ params: { email: payload.email, password: payload.password}})
         .then(response => {
             commit("LOGIN", response.data.token)
+            // Set token in localstorage for auto authentication
             localStorage.setItem('authToken', response.data.token)
+            // Update API default token
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+            // Redirect to home page when logged
             router.push({name: 'Home'}).then(() => console.log("login success"))
         })
         .catch(error => {
@@ -18,6 +20,7 @@ export function login ( { commit }, payload) {
             } else {
                 commit("ERROR", "A error was occurred")
             }
+            localStorage.removeItem('authToken')
         })
         .finally(() => commit('LOADING', false))
 }
@@ -25,10 +28,14 @@ export function login ( { commit }, payload) {
 export function register ( { commit }, payload) {
     commit('LOADING', true)
     axios
-        .post('http://138.68.74.39/api/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
+        .post('/register', null, { params: { email: payload.email, password: payload.password, name: payload.name}})
         .then(response => {
             commit("LOGIN", response.data.token)
+            // Set token in localstorage for auto authentication
             localStorage.setItem('authToken', response.data.token)
+            //Update API default token
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+            // Redirect to home when register then logged
             router.push({name: "Home"}).then(() => console.log("register success"))
         })
         .catch(error => {
@@ -40,13 +47,14 @@ export function register ( { commit }, payload) {
                     commit("ERROR", e)
                 }
             }
+            localStorage.removeItem('authToken')
         })
         .finally(() => commit('LOADING', false))
 }
 
 export function getUserAccount( { commit }) {
     commit('LOADING', true)
-    api
+    axios
         .get('/user')
         .then((res) => {
             commit("SETUSER", res.data)
@@ -59,6 +67,11 @@ export function getUserAccount( { commit }) {
 
 export function logout( { commit, rootState }) {
     commit('LOGOUT', rootState)
+    // Remove default axios header for authentication
+    localStorage.removeItem('authToken')
+    // Remove localStorage token
+    delete axios.defaults.headers.common['Authorization']
+    // Redirect to login page
     router.push({name: 'login'}).then(() => console.log("Signin"))
 }
 

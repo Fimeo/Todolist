@@ -1,5 +1,5 @@
 export const isLogged = (state) => {
-    return state.token !== "";
+    return !!state.token
 }
 
 export const isLoading = (state) => {

@@ -2,6 +2,7 @@
   <div class="user">
     <h1>Bonjour  {{ getUser.name }}</h1>
   </div>
+  <canvas id="myCanvas" width="500" height="200"></canvas>
   <div class="actions">
     <button v-on:click="logout">Déconnexion</button>
   </div>
@@ -16,10 +17,7 @@ export default {
     ...mapGetters('account', ['getUser'])
   },
   methods: {
-    ...mapActions('account', ['getUserAccount', 'logout'])
-  },
-  mounted() {
-    this.getUserAccount();
+    ...mapActions('account', ['logout'])
   }
 }
 </script>

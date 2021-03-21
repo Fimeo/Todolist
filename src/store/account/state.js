@@ -1,6 +1,6 @@
 export default function () {
     return {
-        token: "",
+        token: localStorage.getItem('authToken') || "",
         user: {},
         errors: [],
         isLoading: false,

@@ -29,17 +29,18 @@ export default {
     ...mapGetters('todo', ['getCurrentListId']),
     current: function () {
       return this.getCurrentListId;
+    },
+    token: function() {
+      return localStorage.getItem('authToken');
     }
   },
   methods: {
-    ...mapActions('todo', ['getTodolists', 'getTodos', 'createTodolist'])
+    ...mapActions('todo', ['getTodolists', 'getTodos', 'createTodolist']),
+    ...mapActions('account', ['getUserAccount'])
   },
-  created: function () {
-    if (!localStorage.getItem('authToken')) {
-      this.$router.push({name: 'login'})
-    } else {
+  created: function() {
       this.getTodolists()
-    }
+      this.getUserAccount()
   }
 }
 </script>

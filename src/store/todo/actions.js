@@ -1,8 +1,8 @@
-import api from '@/api/api.js'
+import axios from "axios";
 
 export function toggleTodo( { commit }, payload) {
     commit('TOGGLETODO', payload)
-    api
+    axios
         .post('/completeTodo/' + payload.todoId, null, {params: {name: payload.name, completed: +!payload.completed, todolist_id: payload.listId}})
         .catch(() => {
             payload.completed = +!payload.completed
@@ -11,14 +11,16 @@ export function toggleTodo( { commit }, payload) {
 }
 
 export function getTodolists( { commit }) {
-    api.get('/todolists')
+    axios
+        .get('/todolists')
         .then(response => {
             commit('SETLISTS', response.data)
         })
 }
 
 export function getTodos( { commit } , payload) {
-    api.get('/todos/' + payload.listId)
+    axios
+        .get('/todos/' + payload.listId)
         .then(response => {
             payload.data = response.data
             commit("SETTODOS", payload)
@@ -29,7 +31,7 @@ export function getTodos( { commit } , payload) {
 }
 
 export function createTodo( { commit }, payload) {
-    api
+    axios
         .post('/todo', null, {params: {name: payload.text, completed:0, todolist_id:payload.listId}})
         .then(response => {
             commit('CREATETODO', response.data)
@@ -40,7 +42,7 @@ export function createTodo( { commit }, payload) {
 }
 
 export function createTodolist( { commit }, payload) {
-    api
+    axios
         .post('/todolist', null, {params: {name: payload.name}})
         .then(response => {
             commit("CREATETODOLIST", response.data)
@@ -51,7 +53,7 @@ export function createTodolist( { commit }, payload) {
 }
 
 export function deleteTodolist( { commit }, payload) {
-    api
+    axios
         .delete('/todolist/' + payload.listId)
         .then(() => {
             commit("DELETELIST", payload)
@@ -62,7 +64,7 @@ export function deleteTodolist( { commit }, payload) {
 }
 
 export function deleteTodo ({ commit }, payload) {
-    api
+    axios
         .delete('/todo/' + payload.todoId)
         .then(() => {
             commit("DELETETODO", payload)
@@ -85,7 +87,7 @@ export function changeCurrentList( { commit, dispatch }, payload) {
 }
 
 export function changeTodoText( { commit }, payload) {
-    api
+    axios
         .patch('/todo/' + payload.todoId, null, {params: {name: payload.text, completed: +payload.completed, todolist_id: payload.listId}})
         .then(() => {
             commit("CHANGETODOTEXT", payload);
