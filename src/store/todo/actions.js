@@ -89,7 +89,7 @@ export function changeCurrentList( { commit, dispatch }, payload) {
 
 export function changeTodoText( { commit }, payload) {
     axios
-        .patch('/todo/' + payload.todoId, null, {params: {name: payload.text, completed: +payload.completed, todolist_id: payload.listId}})
+        .patch('/todo/' + payload.todoId, null, {params: {name: payload.text}})
         .then(() => {
             commit("CHANGETODOTEXT", payload);
         })

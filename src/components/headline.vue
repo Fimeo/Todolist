@@ -2,7 +2,6 @@
   <div class="user">
     <h1>Bonjour  {{ getUser.name }}</h1>
   </div>
-  <canvas id="myCanvas" width="500" height="200"></canvas>
   <div class="actions">
     <button v-on:click="logout">Déconnexion</button>
   </div>
