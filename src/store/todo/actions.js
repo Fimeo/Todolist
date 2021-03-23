@@ -1,4 +1,5 @@
 import axios from "axios";
+//TODO : axios interceptor when 401 response code to make a logout
 
 export function toggleTodo( { commit }, payload) {
     commit('TOGGLETODO', payload)

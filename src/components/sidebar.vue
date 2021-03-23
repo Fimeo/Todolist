@@ -2,6 +2,7 @@
   <div class="left_menu">
     <div class="list_menu" role="navigation">
       <ul>
+        <li><p><b>Todo restants : </b>{{ allRemain }}</p></li>
         <li v-for="list in getTodolists" v-bind:key="list.id" v-bind:class="list.id === getCurrentListId ? 'current' : ''"
         v-on:click="changeCurrentList({listId: list.id})">
           <span class="item_icon">
@@ -41,6 +42,13 @@ export default {
   },
   computed: {
     ...mapGetters('todo', ['getTodolists', 'remainTodos', 'getCurrentListId']),
+    allRemain :function () {
+      let acc = 0
+      for (let l of this.getTodolists) {
+          acc += this.remainTodos(l.id).length
+      }
+      return acc;
+    }
   }
 }
 </script>

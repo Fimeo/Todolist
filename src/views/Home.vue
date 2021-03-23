@@ -8,7 +8,7 @@
     <section class="wrapper">
       <div class="wrapper_content">
         <sidebar></sidebar>
-        <TodoList :current-list-id="current" v-if="current"></TodoList>
+        <TodoList :current-list-id="getCurrentListId" v-if="getCurrentListId"></TodoList>
       </div>
     </section>
   </div>
@@ -27,15 +27,9 @@ export default {
   },
   computed: {
     ...mapGetters('todo', ['getCurrentListId']),
-    current: function () {
-      return this.getCurrentListId;
-    },
-    token: function() {
-      return localStorage.getItem('authToken');
-    }
   },
   methods: {
-    ...mapActions('todo', ['getTodolists', 'getTodos', 'createTodolist']),
+    ...mapActions('todo', ['getTodolists']),
     ...mapActions('account', ['getUserAccount'])
   },
   created: function() {
